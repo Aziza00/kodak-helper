@@ -122,6 +122,52 @@ main {
   min-height:400px;
 }
 
+
+  /* ПАНЕЛЬ ОБНОВЛЕНИЯ ДАННЫХ */
+
+.data-toolbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  padding:13px 16px;
+  margin-bottom:25px;
+  background:#fff;
+  border:1px solid #e8e8e8;
+  border-radius:10px;
+}
+
+.data-toolbar-info {
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  font-size:13px;
+  color:var(--gray);
+}
+
+.refresh-button {
+  padding:11px 17px;
+  background:var(--yellow);
+  color:var(--black);
+  border:0;
+  border-radius:8px;
+  font-size:14px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.refresh-button:hover {
+  background:#e8c600;
+}
+
+.refresh-button:disabled {
+  opacity:.6;
+  cursor:wait;
+}
+
+  
 .welcome {
   margin-bottom:25px;
 }
@@ -622,7 +668,24 @@ footer {
 </nav>
 
 <main>
-  <section class="welcome">
+
+  <div class="data-toolbar">
+    <div class="data-toolbar-info">
+      <strong>Состояние базы данных</strong>
+      <span id="lastUpdated">Последнее обновление: ещё не загружено</span>
+    </div>
+
+    <button
+      id="refreshButton"
+      class="refresh-button"
+      onclick="loadKodakData(true)"
+    >
+      ↻ Обновить данные
+    </button>
+  </div>
+
+  <section class="welcome"> 
+    
     <h1>Добро пожаловать! 👋</h1>
     <p>Выберите нужный раздел для работы</p>
   </section>
@@ -862,13 +925,34 @@ let allLinks = [];
 // ЗАГРУЗКА ДАННЫХ
 // ========================================
 
-function loadKodakData() {
+function loadKodakData(manual = false) {
+  if (window.kodakLoading) return;
+
+  window.kodakLoading = true;
+
+  const button = document.getElementById('refreshButton');
+
+  if (button) {
+    button.disabled = true;
+    button.textContent = '⏳ Обновление...';
+  }
+
   const script = document.createElement('script');
   const callbackName = 'kodakApiCallback';
+
+  const finishLoading = () => {
+    window.kodakLoading = false;
+
+    if (button) {
+      button.disabled = false;
+      button.textContent = '↻ Обновить данные';
+    }
+  };
 
   const timeout = setTimeout(() => {
     delete window[callbackName];
     script.remove();
+    finishLoading();
     showApiError();
   }, 20000);
 
@@ -878,41 +962,49 @@ function loadKodakData() {
     delete window[callbackName];
 
     if (!data || !Array.isArray(data.price)) {
+      finishLoading();
       showApiError();
       return;
     }
 
-    const sortByOrder = (a, b) =>
-      Number(a['Порядок'] || 0) - Number(b['Порядок'] || 0);
+    allPrices = data.price.sort((a, b) =>
+      Number(a['Порядок'] || 0) - Number(b['Порядок'] || 0)
+    );
 
-    allPrices = data.price.sort(sortByOrder);
-    allPhoto = Array.isArray(data.photo) ? data.photo.sort(sortByOrder) : [];
-    allInstructions = Array.isArray(data.instructions)
-      ? data.instructions.sort(sortByOrder)
-      : [];
-    allLinks = Array.isArray(data.links)
-      ? data.links.sort(sortByOrder)
+    allPhoto = Array.isArray(data.photo)
+      ? data.photo.sort((a, b) =>
+          Number(a['Порядок'] || 0) - Number(b['Порядок'] || 0)
+        )
       : [];
 
     buildCategoryFilter();
     renderPrices();
     renderPhoto();
-    renderInstructions();
-    renderLinks();
-
     setApiStatus(true);
+
+    const lastUpdated = document.getElementById('lastUpdated');
+
+    if (lastUpdated) {
+      lastUpdated.textContent =
+        'Последнее обновление: ' +
+        new Date().toLocaleString('ru-RU');
+    }
+
+    finishLoading();
   };
 
   script.onerror = function() {
     clearTimeout(timeout);
     script.remove();
     delete window[callbackName];
+    finishLoading();
     showApiError();
   };
 
   script.src = API_URL + '?callback=' + callbackName + '&t=' + Date.now();
   document.body.appendChild(script);
 }
+  
 
   
 
