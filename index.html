@@ -114,6 +114,44 @@
       font-size: 12px;
     }
 
+
+    
+    .content-section {
+      display: none;
+      background: white;
+      border-radius: 12px;
+      padding: 28px;
+      margin-top: 25px;
+      border: 1px solid #e8e8e8;
+    }
+
+    .content-section:target {
+      display: block;
+    }
+
+    .content-section h2 {
+      margin-bottom: 18px;
+    }
+
+    .content-section p {
+      line-height: 1.7;
+      color: #555;
+      margin-bottom: 12px;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: #F9D500;
+      color: #202020;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 8px;
+    }
+
+    
+    
     @media (max-width: 700px) {
       .grid {
         grid-template-columns: repeat(2, 1fr);
@@ -136,7 +174,7 @@
 
 <body>
 
-  <header>
+  <header id="top">
     <div class="brand">KODAK <span>HELPER</span></div>
     <p>Ваш цифровой помощник на каждый рабочий день</p>
   </header>
@@ -148,37 +186,37 @@
     </section>
 
     <section class="grid">
-      <a class="item" href="#">
+      <a class="item" href="#photo">
         <div class="icon">📸</div>
         <h3>Фото на документы</h3>
         <p>Размеры и требования</p>
       </a>
 
-      <a class="item" href="#">
+      <a class="item" href="#printers">
         <div class="icon">🖨️</div>
         <h3>Принтеры</h3>
         <p>Настройки и устранение ошибок</p>
       </a>
 
-      <a class="item" href="#">
+      <a class="item" href="#prices">
         <div class="icon">💳</div>
         <h3>Прайс услуг</h3>
         <p>Стоимость и виды услуг</p>
       </a>
 
-      <a class="item" href="#">
+      <a class="item" href="#media">
         <div class="icon">💾</div>
         <h3>Флешки и карты</h3>
         <p>Работа с файлами и носителями</p>
       </a>
 
-      <a class="item" href="#">
+      <a class="item" href="#instructions">
         <div class="icon">📚</div>
         <h3>Инструкции</h3>
         <p>Пошаговые подсказки</p>
       </a>
 
-      <a class="item" href="#">
+      <a class="item" href="#links">
         <div class="icon">🌐</div>
         <h3>Полезные ссылки</h3>
         <p>Сайты и программы</p>
@@ -186,6 +224,50 @@
     </section>
   </main>
 
+
+
+  
+  <section id="photo" class="content-section">
+    <h2>📸 Фото на документы</h2>
+    <p>Информация о форматах фотографий и требованиях к ним.</p>
+    <p>Здесь разместим размеры, примеры и инструкции по подготовке фотографий.</p>
+    <a class="back-button" href="#top">← На главную</a>
+  </section>
+
+  <section id="printers" class="content-section">
+    <h2>🖨️ Принтеры</h2>
+    <p>Инструкции по работе с фотопринтерами.</p>
+    <p>Здесь будут настройки печати, замена бумаги и решение распространённых ошибок.</p>
+    <a class="back-button" href="#top">← На главную</a>
+  </section>
+
+  <section id="prices" class="content-section">
+    <h2>💳 Прайс услуг</h2>
+    <p>Актуальные цены на услуги фотобутика.</p>
+    <p>Здесь разместим полный список услуг и стоимость.</p>
+    <a class="back-button" href="#top">← На главную</a>
+  </section>
+
+  <section id="media" class="content-section">
+    <h2>💾 Флешки и карты памяти</h2>
+    <p>Инструкции по работе с USB-накопителями и картами памяти.</p>
+    <a class="back-button" href="#top">← На главную</a>
+  </section>
+
+  <section id="instructions" class="content-section">
+    <h2>📚 Инструкции</h2>
+    <p>Пошаговые инструкции для повседневной работы.</p>
+    <a class="back-button" href="#top">← На главную</a>
+  </section>
+
+  <section id="links" class="content-section">
+    <h2>🌐 Полезные ссылки</h2>
+    <p>Здесь соберём необходимые сайты и программы.</p>
+    <a class="back-button" href="#top">← На главную</a>
+  </section>
+
+
+  
   <footer>
     KODAK HELPER · YOUR DAILY WORK ASSISTANT
   </footer>
