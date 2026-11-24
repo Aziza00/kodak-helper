@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#F9D500">
+  <title>KODAK HELPER</title>
+  <style>
+    :root {
+      --yellow: #F9D500;
+      --red: #E31B23;
+      --black: #202020;
+      --gray: #777;
+      --bg: #F5F5F5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--black);
+    }
+
+    header {
+      background: var(--yellow);
+      padding: 28px 7%;
+      border-bottom: 5px solid var(--red);
+    }
+
+    .brand {
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: -2px;
+    }
+
+    .brand span {
+      font-size: 15px;
+      letter-spacing: 2px;
+      margin-left: 8px;
+    }
+
+    header p {
+      margin-top: 15px;
+      font-size: 15px;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .welcome {
+      margin-bottom: 28px;
+    }
+
+    .welcome h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .welcome p {
+      color: var(--gray);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .item {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      border: 1px solid #e8e8e8;
+      text-decoration: none;
+      color: var(--black);
+      transition: .2s;
+      cursor: pointer;
+    }
+
+    .item:hover {
+      transform: translateY(-4px);
+      border-color: var(--yellow);
+      box-shadow: 0 5px 18px #00000010;
+    }
+
+    .item .icon {
+      font-size: 32px;
+      margin-bottom: 14px;
+    }
+
+    .item h3 {
+      font-size: 17px;
+      margin-bottom: 7px;
+    }
+
+    .item p {
+      color: var(--gray);
+      font-size: 13px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: var(--gray);
+      font-size: 12px;
+    }
+
+    @media (max-width: 700px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      header {
+        padding: 24px;
+      }
+      main {
+        margin-top: 28px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="brand">KODAK <span>HELPER</span></div>
+    <p>Ваш цифровой помощник на каждый рабочий день</p>
+  </header>
+
+  <main>
+    <section class="welcome">
+      <h1>Добро пожаловать! 👋</h1>
+      <p>Выберите нужный раздел для работы</p>
+    </section>
+
+    <section class="grid">
+      <a class="item" href="#">
+        <div class="icon">📸</div>
+        <h3>Фото на документы</h3>
+        <p>Размеры и требования</p>
+      </a>
+
+      <a class="item" href="#">
+        <div class="icon">🖨️</div>
+        <h3>Принтеры</h3>
+        <p>Настройки и устранение ошибок</p>
+      </a>
+
+      <a class="item" href="#">
+        <div class="icon">💳</div>
+        <h3>Прайс услуг</h3>
+        <p>Стоимость и виды услуг</p>
+      </a>
+
+      <a class="item" href="#">
+        <div class="icon">💾</div>
+        <h3>Флешки и карты</h3>
+        <p>Работа с файлами и носителями</p>
+      </a>
+
+      <a class="item" href="#">
+        <div class="icon">📚</div>
+        <h3>Инструкции</h3>
+        <p>Пошаговые подсказки</p>
+      </a>
+
+      <a class="item" href="#">
+        <div class="icon">🌐</div>
+        <h3>Полезные ссылки</h3>
+        <p>Сайты и программы</p>
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    KODAK HELPER · YOUR DAILY WORK ASSISTANT
+  </footer>
+
+</body>
+</html>
