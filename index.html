@@ -451,7 +451,7 @@ footer {
 
         <tbody id="priceList">
           <tr>
-            <td colspan="4" class="message">
+            <td colspan="3" class="message">
               Загружаем каталог...
             </td>
           </tr>
@@ -654,7 +654,7 @@ const matchesSearch =
   if (!filtered.length) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="4" class="message">
+        <td colspan="3" class="message">
           Ничего не найдено.
         </td>
       </tr>
@@ -675,7 +675,6 @@ const matchesSearch =
       <tr>
         <td><strong>${position}</strong></td>
         <td><span class="category-label">${itemCategory}</span></td>
-        <td>${paper === '0' ? '—' : paper}</td>
         <td>${price}</td>
       </tr>
     `;
