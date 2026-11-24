@@ -129,6 +129,11 @@
       display: block;
     }
 
+        body:has(.content-section:target) .welcome,
+    body:has(.content-section:target) .grid {
+      display: none;
+    }
+
     .content-section h2 {
       margin-bottom: 18px;
     }
@@ -241,30 +246,44 @@
     <a class="back-button" href="#top">← На главную</a>
   </section>
 
+ 
   <section id="prices" class="content-section">
-    <h2>💳 Прайс услуг</h2>
-    <p>Актуальные цены на услуги фотобутика.</p>
-    <p>Здесь разместим полный список услуг и стоимость.</p>
+    <h2>💳 Прайс услуг Kodak</h2>
+    <p>Найдите нужную услугу и посмотрите стоимость.</p>
+
+    <input
+      type="search"
+      id="priceSearch"
+      placeholder="🔍 Поиск услуги..."
+      oninput="filterPrices()"
+      style="width:100%;padding:14px;border:1px solid #ddd;border-radius:8px;margin:15px 0;font-size:15px;"
+    >
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;text-align:left;">
+        <thead>
+          <tr style="background:#F9D500;">
+            <th style="padding:12px;">Услуга</th>
+            <th style="padding:12px;">Цена</th>
+          </tr>
+        </thead>
+        <tbody id="priceList">
+          <tr><td>Фото 10×15 см</td><td>150 ₸</td></tr>
+          <tr><td>Фото 15×20 см</td><td>350 ₸</td></tr>
+          <tr><td>Ксерокопия</td><td>50 ₸</td></tr>
+          <tr><td>Печать чёрно-белая</td><td>60 ₸</td></tr>
+          <tr><td>Печать цветная</td><td>100 ₸</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p id="noPrice" style="display:none;margin-top:15px;">
+      Услуга не найдена.
+    </p>
+
     <a class="back-button" href="#top">← На главную</a>
   </section>
 
-  <section id="media" class="content-section">
-    <h2>💾 Флешки и карты памяти</h2>
-    <p>Инструкции по работе с USB-накопителями и картами памяти.</p>
-    <a class="back-button" href="#top">← На главную</a>
-  </section>
-
-  <section id="instructions" class="content-section">
-    <h2>📚 Инструкции</h2>
-    <p>Пошаговые инструкции для повседневной работы.</p>
-    <a class="back-button" href="#top">← На главную</a>
-  </section>
-
-  <section id="links" class="content-section">
-    <h2>🌐 Полезные ссылки</h2>
-    <p>Здесь соберём необходимые сайты и программы.</p>
-    <a class="back-button" href="#top">← На главную</a>
-  </section>
 
 
   
@@ -272,5 +291,31 @@
     KODAK HELPER · YOUR DAILY WORK ASSISTANT
   </footer>
 
+
+  
+<script>
+  function filterPrices() {
+    const search = document
+      .getElementById('priceSearch')
+      .value.toLowerCase();
+
+    const rows = document.querySelectorAll('#priceList tr');
+    let found = 0;
+
+    rows.forEach(row => {
+      const match = row.textContent.toLowerCase().includes(search);
+
+      row.style.display = match ? '' : 'none';
+
+      if (match) found++;
+    });
+
+    document.getElementById('noPrice').style.display =
+      found ? 'none' : 'block';
+  }
+</script>
+
+
+  
 </body>
 </html>
