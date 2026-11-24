@@ -2,441 +2,707 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#F9D500">
-  <title>KODAK HELPER</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F9D500">
+<title>KODAK HELPER</title>
 
-  <style>
-    :root {
-      --yellow: #F9D500;
-      --red: #E31B23;
-      --black: #202020;
-      --gray: #777;
-      --bg: #F5F5F5;
-      --white: #FFFFFF;
-    }
+<style>
+:root {
+  --yellow:#F9D500;
+  --red:#E31B23;
+  --black:#202020;
+  --gray:#777;
+  --bg:#F5F5F5;
+  --white:#fff;
+}
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    body {
-      font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--black);
-    }
+body {
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--black);
+}
 
-    header {
-      background: var(--yellow);
-      padding: 28px 7%;
-      border-bottom: 5px solid var(--red);
-    }
+header {
+  background:var(--yellow);
+  padding:25px 7%;
+  border-bottom:5px solid var(--red);
+}
 
-    .brand {
-      font-size: 34px;
-      font-weight: 900;
-      letter-spacing: -2px;
-    }
+.brand {
+  font-size:34px;
+  font-weight:900;
+  letter-spacing:-2px;
+}
 
-    .brand span {
-      font-size: 15px;
-      letter-spacing: 2px;
-      margin-left: 8px;
-    }
+.brand span {
+  font-size:15px;
+  letter-spacing:2px;
+  margin-left:8px;
+}
 
-    header p {
-      margin-top: 15px;
-      font-size: 15px;
-    }
+header p {
+  margin-top:12px;
+  font-size:14px;
+}
 
-    main {
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 0 20px;
-      min-height: 400px;
-    }
+main {
+  max-width:1100px;
+  margin:35px auto;
+  padding:0 20px;
+  min-height:400px;
+}
 
-    .welcome {
-      margin-bottom: 28px;
-    }
+.welcome {
+  margin-bottom:25px;
+}
 
-    .welcome h1 {
-      font-size: 28px;
-      margin-bottom: 8px;
-    }
+.welcome h1 {
+  font-size:27px;
+  margin-bottom:8px;
+}
 
-    .welcome p {
-      color: var(--gray);
-    }
+.welcome p {
+  color:var(--gray);
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
+.grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
 
-    .item {
-      display: block;
-      background: var(--white);
-      border-radius: 12px;
-      padding: 25px;
-      border: 1px solid #e8e8e8;
-      text-decoration: none;
-      color: var(--black);
-      transition: .2s;
-      cursor: pointer;
-    }
+.item {
+  display:block;
+  background:var(--white);
+  border:1px solid #e8e8e8;
+  border-radius:12px;
+  padding:24px;
+  text-decoration:none;
+  color:var(--black);
+  transition:.2s;
+}
 
-    .item:hover {
-      transform: translateY(-4px);
-      border-color: var(--yellow);
-      box-shadow: 0 5px 18px #00000010;
-    }
+.item:hover {
+  transform:translateY(-3px);
+  border-color:var(--yellow);
+  box-shadow:0 5px 18px #00000010;
+}
 
-    .item .icon {
-      font-size: 32px;
-      margin-bottom: 14px;
-    }
+.item .icon {
+  font-size:31px;
+  margin-bottom:13px;
+}
 
-    .item h3 {
-      font-size: 17px;
-      margin-bottom: 7px;
-    }
+.item h3 {
+  font-size:17px;
+  margin-bottom:7px;
+}
 
-    .item p {
-      color: var(--gray);
-      font-size: 13px;
-    }
+.item p {
+  font-size:13px;
+  color:var(--gray);
+}
 
-    .content-section {
-      display: none;
-      background: var(--white);
-      border-radius: 12px;
-      padding: 28px;
-      border: 1px solid #e8e8e8;
-      animation: appear .2s ease;
-    }
+.content-section {
+  display:none;
+  background:white;
+  border:1px solid #e8e8e8;
+  border-radius:12px;
+  padding:28px;
+  animation:appear .2s ease;
+}
 
-    .content-section:target {
-      display: block;
-    }
+.content-section:target {
+  display:block;
+}
 
-    body:has(.content-section:target) .welcome,
-    body:has(.content-section:target) .grid {
-      display: none;
-    }
+body:has(.content-section:target) .welcome,
+body:has(.content-section:target) .grid {
+  display:none;
+}
 
-    .content-section h2 {
-      margin-bottom: 18px;
-    }
+.content-section h2 {
+  font-size:23px;
+  margin-bottom:12px;
+}
 
-    .content-section p {
-      line-height: 1.7;
-      color: #555;
-      margin-bottom: 12px;
-    }
+.section-description {
+  color:var(--gray);
+  line-height:1.6;
+  margin-bottom:20px;
+}
 
-    .back-button {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 12px 20px;
-      background: var(--yellow);
-      color: var(--black);
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 8px;
-      transition: .2s;
-    }
+.back-button {
+  display:inline-block;
+  margin-top:25px;
+  padding:12px 20px;
+  background:var(--yellow);
+  color:var(--black);
+  text-decoration:none;
+  font-weight:bold;
+  border-radius:8px;
+}
 
-    .back-button:hover {
-      background: #e8c600;
-    }
+.back-button:hover {
+  background:#e8c600;
+}
 
-    .search-input {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      margin: 15px 0;
-      font-size: 15px;
-      outline: none;
-    }
+/* ПРАЙС */
 
-    .search-input:focus {
-      border-color: var(--yellow);
-      box-shadow: 0 0 0 2px #F9D50030;
-    }
+.price-toolbar {
+  display:flex;
+  gap:12px;
+  margin:20px 0;
+  flex-wrap:wrap;
+}
 
-    .price-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-    }
+.search-input,
+.category-select {
+  padding:13px 14px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  font-size:15px;
+  background:white;
+  outline:none;
+}
 
-    .price-table th,
-    .price-table td {
-      padding: 14px 12px;
-      border-bottom: 1px solid #eee;
-    }
+.search-input {
+  flex:1;
+  min-width:200px;
+}
 
-    .price-table thead {
-      background: var(--yellow);
-    }
+.category-select {
+  min-width:180px;
+}
 
-    .price-table tbody tr:hover {
-      background: #fffbea;
-    }
+.search-input:focus,
+.category-select:focus {
+  border-color:var(--yellow);
+}
 
-    .price-table td:last-child {
-      font-weight: bold;
-      white-space: nowrap;
-    }
+.price-info {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:15px;
+  font-size:13px;
+  color:var(--gray);
+}
 
-    #noPrice {
-      display: none;
-      margin-top: 15px;
-      color: var(--gray);
-    }
+.price-table-wrap {
+  overflow-x:auto;
+}
 
-    footer {
-      text-align: center;
-      padding: 30px;
-      color: var(--gray);
-      font-size: 12px;
-    }
+.price-table {
+  width:100%;
+  border-collapse:collapse;
+  text-align:left;
+}
 
-    @keyframes appear {
-      from {
-        opacity: 0;
-        transform: translateY(5px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+.price-table th {
+  background:var(--yellow);
+  padding:14px 12px;
+  white-space:nowrap;
+}
 
-    @media (max-width: 700px) {
-      .grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+.price-table td {
+  padding:13px 12px;
+  border-bottom:1px solid #eee;
+}
 
-      header {
-        padding: 24px;
-      }
+.price-table tbody tr:hover {
+  background:#fffbea;
+}
 
-      main {
-        margin-top: 28px;
-      }
-    }
+.price-table td:last-child {
+  font-weight:bold;
+  white-space:nowrap;
+}
 
-    @media (max-width: 450px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
+.category-label {
+  display:inline-block;
+  padding:5px 9px;
+  background:#f2f2f2;
+  border-radius:6px;
+  font-size:12px;
+  white-space:nowrap;
+}
 
-      .welcome h1 {
-        font-size: 23px;
-      }
+.empty-price {
+  color:#999;
+  font-weight:normal;
+  font-size:13px;
+}
 
-      .content-section {
-        padding: 20px;
-      }
+.message {
+  text-align:center;
+  padding:35px 15px;
+  color:var(--gray);
+  line-height:1.6;
+}
 
-      .brand {
-        font-size: 29px;
-      }
-    }
-  </style>
+.status {
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font-size:12px;
+}
+
+.status-dot {
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#999;
+}
+
+.status.online .status-dot {
+  background:#26a269;
+}
+
+.status.error .status-dot {
+  background:var(--red);
+}
+
+footer {
+  text-align:center;
+  padding:30px;
+  color:var(--gray);
+  font-size:12px;
+}
+
+@keyframes appear {
+  from {opacity:0;transform:translateY(5px);}
+  to {opacity:1;transform:translateY(0);}
+}
+
+@media(max-width:700px) {
+  .grid {
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  header {
+    padding:22px;
+  }
+
+  main {
+    margin-top:25px;
+  }
+}
+
+@media(max-width:450px) {
+  .grid {
+    grid-template-columns:1fr;
+  }
+
+  .content-section {
+    padding:18px;
+  }
+
+  .brand {
+    font-size:29px;
+  }
+
+  .welcome h1 {
+    font-size:23px;
+  }
+
+  .price-table th,
+  .price-table td {
+    padding:11px 8px;
+    font-size:13px;
+  }
+
+  .category-select {
+    width:100%;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <header id="top">
-    <div class="brand">KODAK <span>HELPER</span></div>
-    <p>Ваш цифровой помощник на каждый рабочий день</p>
-  </header>
+<header id="top">
+  <div class="brand">KODAK <span>HELPER</span></div>
+  <p>Ваш цифровой помощник на каждый рабочий день</p>
+</header>
 
-  <main>
+<main>
 
-    <!-- ГЛАВНАЯ -->
+  <section class="welcome">
+    <h1>Добро пожаловать! 👋</h1>
+    <p>Выберите нужный раздел для работы</p>
+  </section>
 
-    <section class="welcome">
-      <h1>Добро пожаловать! 👋</h1>
-      <p>Выберите нужный раздел для работы</p>
-    </section>
+  <section class="grid">
 
-    <section class="grid">
+    <a class="item" href="#photo">
+      <div class="icon">📸</div>
+      <h3>Фото на документы</h3>
+      <p>Размеры и требования</p>
+    </a>
 
-      <a class="item" href="#photo">
-        <div class="icon">📸</div>
-        <h3>Фото на документы</h3>
-        <p>Размеры и требования</p>
-      </a>
+    <a class="item" href="#printers">
+      <div class="icon">🖨️</div>
+      <h3>Принтеры</h3>
+      <p>Настройки и устранение ошибок</p>
+    </a>
 
-      <a class="item" href="#printers">
-        <div class="icon">🖨️</div>
-        <h3>Принтеры</h3>
-        <p>Настройки и устранение ошибок</p>
-      </a>
+    <a class="item" href="#prices">
+      <div class="icon">💳</div>
+      <h3>Прайс услуг</h3>
+      <p>Стоимость и виды услуг</p>
+    </a>
 
-      <a class="item" href="#prices">
-        <div class="icon">💳</div>
-        <h3>Прайс услуг</h3>
-        <p>Стоимость и виды услуг</p>
-      </a>
+    <a class="item" href="#media">
+      <div class="icon">💾</div>
+      <h3>Флешки и карты</h3>
+      <p>Работа с файлами и носителями</p>
+    </a>
 
-      <a class="item" href="#media">
-        <div class="icon">💾</div>
-        <h3>Флешки и карты</h3>
-        <p>Работа с файлами и носителями</p>
-      </a>
+    <a class="item" href="#instructions">
+      <div class="icon">📚</div>
+      <h3>Инструкции</h3>
+      <p>Пошаговые подсказки</p>
+    </a>
 
-      <a class="item" href="#instructions">
-        <div class="icon">📚</div>
-        <h3>Инструкции</h3>
-        <p>Пошаговые подсказки</p>
-      </a>
+    <a class="item" href="#links">
+      <div class="icon">🌐</div>
+      <h3>Полезные ссылки</h3>
+      <p>Сайты и программы</p>
+    </a>
 
-      <a class="item" href="#links">
-        <div class="icon">🌐</div>
-        <h3>Полезные ссылки</h3>
-        <p>Сайты и программы</p>
-      </a>
+  </section>
 
-    </section>
+  <!-- ФОТО НА ДОКУМЕНТЫ -->
 
-    <!-- ФОТО НА ДОКУМЕНТЫ -->
+  <section id="photo" class="content-section">
+    <h2>📸 Фото на документы</h2>
+    <p class="section-description">
+      Размеры, требования и инструкции по подготовке фотографий.
+    </p>
+    <div class="message">Раздел готовится к заполнению.</div>
+    <a class="back-button" href="#top">← На главную</a>
+  </section>
 
-    <section id="photo" class="content-section">
-      <h2>📸 Фото на документы</h2>
-      <p>Информация о форматах фотографий и требованиях к ним.</p>
-      <p>Здесь разместим размеры, примеры и инструкции по подготовке фотографий.</p>
-      <a class="back-button" href="#top">← На главную</a>
-    </section>
+  <!-- ПРИНТЕРЫ -->
 
-    <!-- ПРИНТЕРЫ -->
+  <section id="printers" class="content-section">
+    <h2>🖨️ Принтеры</h2>
+    <p class="section-description">
+      Настройки печати, обслуживание оборудования и устранение ошибок.
+    </p>
+    <div class="message">Раздел готовится к заполнению.</div>
+    <a class="back-button" href="#top">← На главную</a>
+  </section>
 
-    <section id="printers" class="content-section">
-      <h2>🖨️ Принтеры</h2>
-      <p>Инструкции по работе с фотопринтерами.</p>
-      <p>Здесь будут настройки печати, замена бумаги и решение распространённых ошибок.</p>
-      <a class="back-button" href="#top">← На главную</a>
-    </section>
+  <!-- ПРАЙС -->
 
-    <!-- ПРАЙС -->
+  <section id="prices" class="content-section">
+    <h2>💳 Прайс услуг Kodak</h2>
 
-    <section id="prices" class="content-section">
-      <h2>💳 Прайс услуг Kodak</h2>
-      <p>Найдите нужную услугу и посмотрите стоимость.</p>
+    <p class="section-description">
+      Актуальный каталог услуг и товаров фотобутика.
+    </p>
 
+    <div class="price-info">
+      <span id="priceCount">Загрузка каталога...</span>
+      <span id="apiStatus" class="status">
+        <span class="status-dot"></span>
+        Подключение
+      </span>
+    </div>
+
+    <div class="price-toolbar">
       <input
-        type="search"
         id="priceSearch"
         class="search-input"
-        placeholder="🔍 Поиск услуги..."
-        oninput="filterPrices()"
+        type="search"
+        placeholder="🔍 Найти услугу или товар..."
+        oninput="renderPrices()"
       >
 
-      <div style="overflow-x:auto;">
-        <table class="price-table">
-          <thead>
-            <tr>
-              <th>Услуга</th>
-              <th>Цена</th>
-            </tr>
-          </thead>
+      <select
+        id="categoryFilter"
+        class="category-select"
+        onchange="renderPrices()"
+      >
+        <option value="">Все категории</option>
+      </select>
+    </div>
 
-          <tbody id="priceList">
-            <tr>
-              <td>Фото 10×15 см</td>
-              <td>150 ₸</td>
-            </tr>
-            <tr>
-              <td>Фото 15×20 см</td>
-              <td>350 ₸</td>
-            </tr>
-            <tr>
-              <td>Ксерокопия</td>
-              <td>50 ₸</td>
-            </tr>
-            <tr>
-              <td>Печать чёрно-белая</td>
-              <td>60 ₸</td>
-            </tr>
-            <tr>
-              <td>Печать цветная</td>
-              <td>100 ₸</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="price-table-wrap">
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th>Позиция</th>
+            <th>Категория</th>
+            <th>Бумага</th>
+            <th>Цена</th>
+          </tr>
+        </thead>
 
-      <p id="noPrice">Услуга не найдена.</p>
+        <tbody id="priceList">
+          <tr>
+            <td colspan="4" class="message">
+              Загружаем каталог...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-      <a class="back-button" href="#top">← На главную</a>
-    </section>
+    <a class="back-button" href="#top">← На главную</a>
+  </section>
 
-    <!-- ФЛЕШКИ И КАРТЫ -->
+  <!-- НОСИТЕЛИ -->
 
-    <section id="media" class="content-section">
-      <h2>💾 Флешки и карты памяти</h2>
-      <p>Инструкции по работе с USB-накопителями и картами памяти.</p>
-      <p>Здесь разместим подсказки по переносу, копированию и открытию файлов.</p>
-      <a class="back-button" href="#top">← На главную</a>
-    </section>
+  <section id="media" class="content-section">
+    <h2>💾 Флешки и карты памяти</h2>
+    <p class="section-description">
+      Работа с USB-накопителями и картами памяти.
+    </p>
+    <div class="message">Раздел готовится к заполнению.</div>
+    <a class="back-button" href="#top">← На главную</a>
+  </section>
 
-    <!-- ИНСТРУКЦИИ -->
+  <!-- ИНСТРУКЦИИ -->
 
-    <section id="instructions" class="content-section">
-      <h2>📚 Инструкции</h2>
-      <p>Пошаговые инструкции для повседневной работы.</p>
-      <p>Здесь соберём ответы на частые рабочие вопросы.</p>
-      <a class="back-button" href="#top">← На главную</a>
-    </section>
+  <section id="instructions" class="content-section">
+    <h2>📚 Инструкции</h2>
+    <p class="section-description">
+      Пошаговые руководства для повседневной работы.
+    </p>
+    <div class="message">Раздел готовится к заполнению.</div>
+    <a class="back-button" href="#top">← На главную</a>
+  </section>
 
-    <!-- ПОЛЕЗНЫЕ ССЫЛКИ -->
+  <!-- ССЫЛКИ -->
 
-    <section id="links" class="content-section">
-      <h2>🌐 Полезные ссылки</h2>
-      <p>Здесь соберём необходимые сайты и программы.</p>
-      <a class="back-button" href="#top">← На главную</a>
-    </section>
+  <section id="links" class="content-section">
+    <h2>🌐 Полезные ссылки</h2>
+    <p class="section-description">
+      Необходимые сайты и программы.
+    </p>
+    <div class="message">Раздел готовится к заполнению.</div>
+    <a class="back-button" href="#top">← На главную</a>
+  </section>
 
-  </main>
+</main>
 
-  <footer>
-    KODAK HELPER · YOUR DAILY WORK ASSISTANT
-  </footer>
+<footer>
+  KODAK HELPER · YOUR DAILY WORK ASSISTANT
+</footer>
 
-  <script>
-    function filterPrices() {
-      const search = document
-        .getElementById('priceSearch')
-        .value
-        .trim()
-        .toLowerCase();
+<script>
 
-      const rows = document.querySelectorAll('#priceList tr');
-      let found = 0;
+// API GOOGLE APPS SCRIPT
 
-      rows.forEach(row => {
-        const match = row.textContent
-          .toLowerCase()
-          .includes(search);
+const API_URL =
+  'https://script.google.com/macros/s/AKfycbzowu8v2j2HkzK_ycFEg4o5jaSU577in1V7MkdLStHYNV4AErsJMhiKu5Oxl3cEUGl8/exec';
 
-        row.style.display = match ? '' : 'none';
+let allPrices = [];
 
-        if (match) found++;
-      });
+// ЗАГРУЗКА ДАННЫХ ЧЕРЕЗ JSONP
 
-      document.getElementById('noPrice').style.display =
-        found ? 'none' : 'block';
+function loadKodakData() {
+  const script = document.createElement('script');
+
+  const callbackName = 'kodakApiCallback';
+
+  const timeout = setTimeout(() => {
+    delete window[callbackName];
+    script.remove();
+    showApiError();
+  }, 20000);
+
+  window[callbackName] = function(data) {
+    clearTimeout(timeout);
+    script.remove();
+    delete window[callbackName];
+
+    if (!data || !Array.isArray(data.price)) {
+      showApiError();
+      return;
     }
-  </script>
+
+    allPrices = data.price
+      .sort((a, b) =>
+        Number(a['Порядок'] || 0) -
+        Number(b['Порядок'] || 0)
+      );
+
+    buildCategoryFilter();
+    renderPrices();
+    setApiStatus(true);
+  };
+
+  script.onerror = function() {
+    clearTimeout(timeout);
+    script.remove();
+    delete window[callbackName];
+    showApiError();
+  };
+
+  script.src =
+    API_URL +
+    '?callback=' +
+    callbackName +
+    '&t=' +
+    Date.now();
+
+  document.body.appendChild(script);
+}
+
+// СТАТУС API
+
+function setApiStatus(online) {
+  const status = document.getElementById('apiStatus');
+
+  status.className = online
+    ? 'status online'
+    : 'status error';
+
+  status.innerHTML = online
+    ? '<span class="status-dot"></span> Данные загружены'
+    : '<span class="status-dot"></span> Ошибка соединения';
+}
+
+function showApiError() {
+  setApiStatus(false);
+
+  document.getElementById('priceCount').textContent =
+    'Не удалось загрузить каталог';
+
+  document.getElementById('priceList').innerHTML = `
+    <tr>
+      <td colspan="4" class="message">
+        Не удалось подключиться к базе Kodak.<br>
+        Проверьте интернет-соединение и попробуйте обновить страницу.
+        <br><br>
+        <button
+          onclick="loadKodakData()"
+          style="padding:10px 18px;background:#F9D500;border:0;border-radius:7px;cursor:pointer;font-weight:bold;"
+        >
+          Повторить загрузку
+        </button>
+      </td>
+    </tr>
+  `;
+}
+
+// СОЗДАНИЕ СПИСКА КАТЕГОРИЙ
+
+function buildCategoryFilter() {
+  const select = document.getElementById('categoryFilter');
+
+  const categories = [
+    ...new Set(
+      allPrices.map(item => item['Категория']).filter(Boolean)
+    )
+  ];
+
+  select.innerHTML = '<option value="">Все категории</option>';
+
+  categories.forEach(category => {
+    const option = document.createElement('option');
+    option.value = category;
+    option.textContent = category;
+    select.appendChild(option);
+  });
+}
+
+// ОТОБРАЖЕНИЕ ПРАЙСА
+
+function renderPrices() {
+  const search = document
+    .getElementById('priceSearch')
+    .value
+    .trim()
+    .toLowerCase();
+
+  const category = document
+    .getElementById('categoryFilter')
+    .value;
+
+  const filtered = allPrices.filter(item => {
+    const position = (item['Позиция'] || '').toLowerCase();
+    const paper = (item['Бумага'] || '').toLowerCase();
+    const itemCategory = item['Категория'] || '';
+
+    const matchesSearch =
+      position.includes(search) ||
+      paper.includes(search) ||
+      itemCategory.toLowerCase().includes(search);
+
+    const matchesCategory =
+      !category || itemCategory === category;
+
+    return matchesSearch && matchesCategory;
+  });
+
+  const tbody = document.getElementById('priceList');
+
+  document.getElementById('priceCount').textContent =
+    `Показано позиций: ${filtered.length} из ${allPrices.length}`;
+
+  if (!filtered.length) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="4" class="message">
+          Ничего не найдено.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(item => {
+    const position = escapeHTML(item['Позиция'] || 'Без названия');
+    const itemCategory = escapeHTML(item['Категория'] || '—');
+    const paper = escapeHTML(item['Бумага'] || '—');
+    const rawPrice = (item['Цена'] || '').trim();
+
+    const price = rawPrice
+      ? `${escapeHTML(rawPrice)} ₸`
+      : '<span class="empty-price">Цена уточняется</span>';
+
+    return `
+      <tr>
+        <td><strong>${position}</strong></td>
+        <td><span class="category-label">${itemCategory}</span></td>
+        <td>${paper === '0' ? '—' : paper}</td>
+        <td>${price}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// ЗАЩИТА ТЕКСТА ОТ HTML-ВСТАВОК
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  })[char]);
+}
+
+// ЗАПУСК
+
+loadKodakData();
+
+</script>
 
 </body>
 </html>
