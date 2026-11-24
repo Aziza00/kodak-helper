@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#F9D500">
   <title>KODAK HELPER</title>
+
   <style>
     :root {
       --yellow: #F9D500;
@@ -13,6 +14,7 @@
       --black: #202020;
       --gray: #777;
       --bg: #F5F5F5;
+      --white: #FFFFFF;
     }
 
     * {
@@ -54,6 +56,7 @@
       max-width: 1100px;
       margin: 40px auto;
       padding: 0 20px;
+      min-height: 400px;
     }
 
     .welcome {
@@ -76,7 +79,8 @@
     }
 
     .item {
-      background: white;
+      display: block;
+      background: var(--white);
       border-radius: 12px;
       padding: 25px;
       border: 1px solid #e8e8e8;
@@ -107,29 +111,20 @@
       font-size: 13px;
     }
 
-    footer {
-      text-align: center;
-      padding: 30px;
-      color: var(--gray);
-      font-size: 12px;
-    }
-
-
-    
     .content-section {
       display: none;
-      background: white;
+      background: var(--white);
       border-radius: 12px;
       padding: 28px;
-      margin-top: 25px;
       border: 1px solid #e8e8e8;
+      animation: appear .2s ease;
     }
 
     .content-section:target {
       display: block;
     }
 
-        body:has(.content-section:target) .welcome,
+    body:has(.content-section:target) .welcome,
     body:has(.content-section:target) .grid {
       display: none;
     }
@@ -148,30 +143,111 @@
       display: inline-block;
       margin-top: 20px;
       padding: 12px 20px;
-      background: #F9D500;
-      color: #202020;
+      background: var(--yellow);
+      color: var(--black);
       text-decoration: none;
       font-weight: bold;
       border-radius: 8px;
+      transition: .2s;
     }
 
-    
-    
+    .back-button:hover {
+      background: #e8c600;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin: 15px 0;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--yellow);
+      box-shadow: 0 0 0 2px #F9D50030;
+    }
+
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .price-table th,
+    .price-table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .price-table thead {
+      background: var(--yellow);
+    }
+
+    .price-table tbody tr:hover {
+      background: #fffbea;
+    }
+
+    .price-table td:last-child {
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    #noPrice {
+      display: none;
+      margin-top: 15px;
+      color: var(--gray);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: var(--gray);
+      font-size: 12px;
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     @media (max-width: 700px) {
       .grid {
         grid-template-columns: repeat(2, 1fr);
       }
+
       header {
         padding: 24px;
       }
+
       main {
         margin-top: 28px;
       }
     }
 
-    @media (max-width: 400px) {
+    @media (max-width: 450px) {
       .grid {
         grid-template-columns: 1fr;
+      }
+
+      .welcome h1 {
+        font-size: 23px;
+      }
+
+      .content-section {
+        padding: 20px;
+      }
+
+      .brand {
+        font-size: 29px;
       }
     }
   </style>
@@ -185,12 +261,16 @@
   </header>
 
   <main>
+
+    <!-- ГЛАВНАЯ -->
+
     <section class="welcome">
       <h1>Добро пожаловать! 👋</h1>
       <p>Выберите нужный раздел для работы</p>
     </section>
 
     <section class="grid">
+
       <a class="item" href="#photo">
         <div class="icon">📸</div>
         <h3>Фото на документы</h3>
@@ -226,96 +306,137 @@
         <h3>Полезные ссылки</h3>
         <p>Сайты и программы</p>
       </a>
+
     </section>
+
+    <!-- ФОТО НА ДОКУМЕНТЫ -->
+
+    <section id="photo" class="content-section">
+      <h2>📸 Фото на документы</h2>
+      <p>Информация о форматах фотографий и требованиях к ним.</p>
+      <p>Здесь разместим размеры, примеры и инструкции по подготовке фотографий.</p>
+      <a class="back-button" href="#top">← На главную</a>
+    </section>
+
+    <!-- ПРИНТЕРЫ -->
+
+    <section id="printers" class="content-section">
+      <h2>🖨️ Принтеры</h2>
+      <p>Инструкции по работе с фотопринтерами.</p>
+      <p>Здесь будут настройки печати, замена бумаги и решение распространённых ошибок.</p>
+      <a class="back-button" href="#top">← На главную</a>
+    </section>
+
+    <!-- ПРАЙС -->
+
+    <section id="prices" class="content-section">
+      <h2>💳 Прайс услуг Kodak</h2>
+      <p>Найдите нужную услугу и посмотрите стоимость.</p>
+
+      <input
+        type="search"
+        id="priceSearch"
+        class="search-input"
+        placeholder="🔍 Поиск услуги..."
+        oninput="filterPrices()"
+      >
+
+      <div style="overflow-x:auto;">
+        <table class="price-table">
+          <thead>
+            <tr>
+              <th>Услуга</th>
+              <th>Цена</th>
+            </tr>
+          </thead>
+
+          <tbody id="priceList">
+            <tr>
+              <td>Фото 10×15 см</td>
+              <td>150 ₸</td>
+            </tr>
+            <tr>
+              <td>Фото 15×20 см</td>
+              <td>350 ₸</td>
+            </tr>
+            <tr>
+              <td>Ксерокопия</td>
+              <td>50 ₸</td>
+            </tr>
+            <tr>
+              <td>Печать чёрно-белая</td>
+              <td>60 ₸</td>
+            </tr>
+            <tr>
+              <td>Печать цветная</td>
+              <td>100 ₸</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p id="noPrice">Услуга не найдена.</p>
+
+      <a class="back-button" href="#top">← На главную</a>
+    </section>
+
+    <!-- ФЛЕШКИ И КАРТЫ -->
+
+    <section id="media" class="content-section">
+      <h2>💾 Флешки и карты памяти</h2>
+      <p>Инструкции по работе с USB-накопителями и картами памяти.</p>
+      <p>Здесь разместим подсказки по переносу, копированию и открытию файлов.</p>
+      <a class="back-button" href="#top">← На главную</a>
+    </section>
+
+    <!-- ИНСТРУКЦИИ -->
+
+    <section id="instructions" class="content-section">
+      <h2>📚 Инструкции</h2>
+      <p>Пошаговые инструкции для повседневной работы.</p>
+      <p>Здесь соберём ответы на частые рабочие вопросы.</p>
+      <a class="back-button" href="#top">← На главную</a>
+    </section>
+
+    <!-- ПОЛЕЗНЫЕ ССЫЛКИ -->
+
+    <section id="links" class="content-section">
+      <h2>🌐 Полезные ссылки</h2>
+      <p>Здесь соберём необходимые сайты и программы.</p>
+      <a class="back-button" href="#top">← На главную</a>
+    </section>
+
   </main>
 
-
-
-  
-  <section id="photo" class="content-section">
-    <h2>📸 Фото на документы</h2>
-    <p>Информация о форматах фотографий и требованиях к ним.</p>
-    <p>Здесь разместим размеры, примеры и инструкции по подготовке фотографий.</p>
-    <a class="back-button" href="#top">← На главную</a>
-  </section>
-
-  <section id="printers" class="content-section">
-    <h2>🖨️ Принтеры</h2>
-    <p>Инструкции по работе с фотопринтерами.</p>
-    <p>Здесь будут настройки печати, замена бумаги и решение распространённых ошибок.</p>
-    <a class="back-button" href="#top">← На главную</a>
-  </section>
-
- 
-  <section id="prices" class="content-section">
-    <h2>💳 Прайс услуг Kodak</h2>
-    <p>Найдите нужную услугу и посмотрите стоимость.</p>
-
-    <input
-      type="search"
-      id="priceSearch"
-      placeholder="🔍 Поиск услуги..."
-      oninput="filterPrices()"
-      style="width:100%;padding:14px;border:1px solid #ddd;border-radius:8px;margin:15px 0;font-size:15px;"
-    >
-
-    <div style="overflow-x:auto;">
-      <table style="width:100%;border-collapse:collapse;text-align:left;">
-        <thead>
-          <tr style="background:#F9D500;">
-            <th style="padding:12px;">Услуга</th>
-            <th style="padding:12px;">Цена</th>
-          </tr>
-        </thead>
-        <tbody id="priceList">
-          <tr><td>Фото 10×15 см</td><td>150 ₸</td></tr>
-          <tr><td>Фото 15×20 см</td><td>350 ₸</td></tr>
-          <tr><td>Ксерокопия</td><td>50 ₸</td></tr>
-          <tr><td>Печать чёрно-белая</td><td>60 ₸</td></tr>
-          <tr><td>Печать цветная</td><td>100 ₸</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p id="noPrice" style="display:none;margin-top:15px;">
-      Услуга не найдена.
-    </p>
-
-    <a class="back-button" href="#top">← На главную</a>
-  </section>
-
-
-
-  
   <footer>
     KODAK HELPER · YOUR DAILY WORK ASSISTANT
   </footer>
 
+  <script>
+    function filterPrices() {
+      const search = document
+        .getElementById('priceSearch')
+        .value
+        .trim()
+        .toLowerCase();
 
-  
-<script>
-  function filterPrices() {
-    const search = document
-      .getElementById('priceSearch')
-      .value.toLowerCase();
+      const rows = document.querySelectorAll('#priceList tr');
+      let found = 0;
 
-    const rows = document.querySelectorAll('#priceList tr');
-    let found = 0;
+      rows.forEach(row => {
+        const match = row.textContent
+          .toLowerCase()
+          .includes(search);
 
-    rows.forEach(row => {
-      const match = row.textContent.toLowerCase().includes(search);
+        row.style.display = match ? '' : 'none';
 
-      row.style.display = match ? '' : 'none';
+        if (match) found++;
+      });
 
-      if (match) found++;
-    });
+      document.getElementById('noPrice').style.display =
+        found ? 'none' : 'block';
+    }
+  </script>
 
-    document.getElementById('noPrice').style.display =
-      found ? 'none' : 'block';
-  }
-</script>
-
-
-  
 </body>
 </html>
