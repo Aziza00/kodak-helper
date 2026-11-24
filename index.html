@@ -900,12 +900,14 @@ function setApiStatus(online) {
     : '<span class="status-dot"></span> Ошибка соединения';
 }
 
+
 function showApiError() {
   setApiStatus(false);
 
   const priceCount = document.getElementById('priceCount');
   const priceList = document.getElementById('priceList');
   const photoList = document.getElementById('photoList');
+  const equipmentList = document.getElementById('equipmentList');
 
   if (priceCount) {
     priceCount.textContent = 'Не удалось загрузить каталог';
@@ -934,7 +936,12 @@ function showApiError() {
   if (photoList) {
     photoList.innerHTML = errorMessage;
   }
+
+  if (equipmentList) {
+    equipmentList.innerHTML = errorMessage;
+  }
 }
+
 
 // ========================================
 // ФИЛЬТР КАТЕГОРИЙ ПРАЙСА
@@ -1018,6 +1025,64 @@ function renderPrices() {
 // ========================================
 // ФОТО НА ДОКУМЕНТЫ
 // ========================================
+
+function renderPhoto() {
+  const searchInput = document.getElementById('photoSearch');
+  const container = document.getElementById('photoList');
+
+  if (!searchInput || !container) return;
+
+  const search = searchInput.value.trim().toLowerCase();
+
+  const filtered = allPhoto.filter(item =>
+    [
+      item['Документ'],
+      item['Размер'],
+      item['Требования'],
+      item['Описание']
+    ].some(value =>
+      String(value || '').toLowerCase().includes(search)
+    )
+  );
+
+  if (!filtered.length) {
+    container.innerHTML = `
+      <div class="message">
+        ${allPhoto.length
+          ? 'Ничего не найдено.'
+          : 'Пока нет опубликованных форматов.'}
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="photo-count">
+      Найдено форматов: ${filtered.length}
+    </div>
+
+    <div class="photo-grid">
+      ${filtered.map(item => `
+        <article class="photo-card">
+          <h3>${escapeHTML(item['Документ'] || 'Без названия')}</h3>
+
+          <div class="photo-size">
+            ${escapeHTML(item['Размер'] || 'Размер не указан')}
+          </div>
+
+          <div class="photo-field">
+            <strong>Требования</strong>
+            ${escapeHTML(item['Требования'] || 'Не указаны')}
+          </div>
+
+          <div class="photo-description">
+            ${escapeHTML(item['Описание'] || '')}
+          </div>
+        </article>
+      `).join('')}
+    </div>
+  `;
+}
 
 // ========================================
 // ОБОРУДОВАНИЕ
