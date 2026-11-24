@@ -789,25 +789,51 @@ footer {
   <!-- ИНСТРУКЦИИ -->
 
   <section id="instructions" class="content-section">
-    <h2>📚 Инструкции</h2>
-    <p class="section-description">
-      Пошаговые руководства для повседневной работы.
-    </p>
-    <div class="message">Раздел готовится к заполнению.</div>
-    <a class="back-button" href="#top">← На главную</a>
-  </section>
+  <h2>📚 Инструкции</h2>
+  <p class="section-description">
+    Пошаговые руководства для повседневной работы.
+  </p>
+
+  <input
+    id="instructionsSearch"
+    class="search-input"
+    type="search"
+    placeholder="🔍 Найти инструкцию..."
+    oninput="renderInstructions()"
+  >
+
+  <div id="instructionsList">
+    <div class="message">Загрузка инструкций...</div>
+  </div>
+
+  <a class="back-button" href="#top">← На главную</a>
+</section>
+  
 
   <!-- ССЫЛКИ -->
 
-  <section id="links" class="content-section">
-    <h2>🌐 Полезные ссылки</h2>
-    <p class="section-description">
-      Необходимые сайты и программы.
-    </p>
-    <div class="message">Раздел готовится к заполнению.</div>
-    <a class="back-button" href="#top">← На главную</a>
-  </section>
+<section id="links" class="content-section">
+  <h2>🌐 Полезные ссылки</h2>
+  <p class="section-description">
+    Необходимые сайты и программы.
+  </p>
 
+  <input
+    id="linksSearch"
+    class="search-input"
+    type="search"
+    placeholder="🔍 Найти сайт или программу..."
+    oninput="renderLinks()"
+  >
+
+  <div id="linksList">
+    <div class="message">Загрузка ссылок...</div>
+  </div>
+
+  <a class="back-button" href="#top">← На главную</a>
+</section>
+
+  
 </main>
 
 <footer>
@@ -825,6 +851,8 @@ const API_URL =
 let allPrices = [];
 let allPhoto = [];
 let allEquipment = [];
+let allInstructions = [];
+let allLinks = [];
 
 // ========================================
 // ЗАГРУЗКА ДАННЫХ
@@ -866,13 +894,27 @@ function loadKodakData() {
     )
   : [];
 
+    allInstructions = Array.isArray(data.instructions)
+  ? data.instructions.sort((a, b) =>
+      Number(a['Порядок'] || 0) - Number(b['Порядок'] || 0)
+    )
+  : [];
+
+allLinks = Array.isArray(data.links)
+  ? data.links.sort((a, b) =>
+      Number(a['Порядок'] || 0) - Number(b['Порядок'] || 0)
+    )
+  : [];
+
     
 
     buildCategoryFilter();
     renderPrices();
     renderPhoto();
     renderEquipment();
-    setApiStatus(true);
+renderInstructions();
+renderLinks();
+setApiStatus(true);
   };
 
   script.onerror = function() {
@@ -909,6 +951,9 @@ function showApiError() {
   const photoList = document.getElementById('photoList');
   const equipmentList = document.getElementById('equipmentList');
 
+  const instructionsList = document.getElementById('instructionsList');
+const linksList = document.getElementById('linksList');
+
   if (priceCount) {
     priceCount.textContent = 'Не удалось загрузить каталог';
   }
@@ -940,6 +985,16 @@ function showApiError() {
   if (equipmentList) {
     equipmentList.innerHTML = errorMessage;
   }
+
+  if (instructionsList) {
+  instructionsList.innerHTML = errorMessage;
+}
+
+if (linksList) {
+  linksList.innerHTML = errorMessage;
+}
+
+  
 }
 
 
@@ -1157,6 +1212,151 @@ function renderEquipment() {
   `;
 }
 
+
+  
+// ========================================
+// ИНСТРУКЦИИ
+// ========================================
+
+function renderInstructions() {
+  const searchInput = document.getElementById('instructionsSearch');
+  const container = document.getElementById('instructionsList');
+
+  if (!searchInput || !container) return;
+
+  const search = searchInput.value.trim().toLowerCase();
+
+  const filtered = allInstructions.filter(item =>
+    [
+      item['Название'],
+      item['Категория'],
+      item['Описание'],
+      item['Шаги']
+    ].some(value =>
+      String(value || '').toLowerCase().includes(search)
+    )
+  );
+
+  if (!filtered.length) {
+    container.innerHTML = `
+      <div class="message">
+        ${allInstructions.length
+          ? 'Ничего не найдено.'
+          : 'Пока нет опубликованных инструкций.'}
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="photo-count">
+      Найдено инструкций: ${filtered.length}
+    </div>
+
+    <div class="equipment-grid">
+      ${filtered.map(item => `
+        <article class="equipment-card">
+          <h3>${escapeHTML(item['Название'] || 'Без названия')}</h3>
+
+          <div class="equipment-model">
+            ${escapeHTML(item['Категория'] || 'Инструкция')}
+          </div>
+
+          <div class="equipment-field">
+            ${escapeHTML(item['Описание'] || '')}
+          </div>
+
+          <div class="equipment-field">
+            <strong>Порядок действий</strong>
+            ${escapeHTML(item['Шаги'] || 'Шаги пока не добавлены').replace(/\r?\n/g, '<br>')}
+          </div>
+        </article>
+      `).join('')}
+    </div>
+  `;
+}
+
+
+// ========================================
+// ПОЛЕЗНЫЕ ССЫЛКИ
+// ========================================
+
+function renderLinks() {
+  const searchInput = document.getElementById('linksSearch');
+  const container = document.getElementById('linksList');
+
+  if (!searchInput || !container) return;
+
+  const search = searchInput.value.trim().toLowerCase();
+
+  const filtered = allLinks.filter(item =>
+    [
+      item['Название'],
+      item['Категория'],
+      item['Описание'],
+      item['URL']
+    ].some(value =>
+      String(value || '').toLowerCase().includes(search)
+    )
+  );
+
+  if (!filtered.length) {
+    container.innerHTML = `
+      <div class="message">
+        ${allLinks.length
+          ? 'Ничего не найдено.'
+          : 'Пока нет опубликованных ссылок.'}
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="photo-count">
+      Найдено ссылок: ${filtered.length}
+    </div>
+
+    <div class="equipment-grid">
+      ${filtered.map(item => {
+        const rawUrl = String(item['URL'] || '').trim();
+
+        let safeUrl = '';
+
+        try {
+          const parsedUrl = new URL(rawUrl);
+          if (['http:', 'https:'].includes(parsedUrl.protocol)) {
+            safeUrl = parsedUrl.href;
+          }
+        } catch (error) {}
+
+        return `
+          <article class="equipment-card">
+            <h3>${escapeHTML(item['Название'] || 'Без названия')}</h3>
+
+            <div class="equipment-model">
+              ${escapeHTML(item['Категория'] || 'Ссылка')}
+            </div>
+
+            <div class="equipment-field">
+              ${escapeHTML(item['Описание'] || '')}
+            </div>
+
+            ${safeUrl
+              ? `<a href="${escapeHTML(safeUrl)}"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="back-button">Открыть сайт ↗</a>`
+              : '<div class="message">Ссылка пока не указана или некорректна.</div>'}
+          </article>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+
+
+  
 // ========================================
 // ЗАЩИТА ТЕКСТА ОТ HTML-ВСТАВОК
 // ========================================
