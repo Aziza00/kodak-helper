@@ -633,8 +633,9 @@ function renderPrices() {
     .value;
 
   const filtered = allPrices.filter(item => {
+    const itemCategory = item['Категория'] || '';
     const position = (item['Позиция'] || '').toLowerCase();
-const itemCategory = item['Категория'] || '';
+
 
 const matchesSearch =
   position.includes(search) ||
