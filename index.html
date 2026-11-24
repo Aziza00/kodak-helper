@@ -852,22 +852,6 @@ function renderPhoto() {
   `;
 }
 
-  container.innerHTML = filtered.map(item => `
-    <article style="padding:18px 0;border-bottom:1px solid #eee;">
-      <h3>${escapeHTML(item['Документ'] || 'Без названия')}</h3>
-      <p style="margin-top:10px;">
-        <strong>Размер:</strong> ${escapeHTML(item['Размер'] || '—')}
-      </p>
-      <p style="margin-top:8px;">
-        <strong>Требования:</strong> ${escapeHTML(item['Требования'] || '—')}
-      </p>
-      ${item['Описание'] ? `
-        <p style="margin-top:8px;">${escapeHTML(item['Описание'])}</p>
-      ` : ''}
-    </article>
-  `).join('');
-}
-
 // ========================================
 // ЗАЩИТА ТЕКСТА ОТ HTML-ВСТАВОК
 // ========================================
