@@ -445,7 +445,6 @@ footer {
           <tr>
             <th>Позиция</th>
             <th>Категория</th>
-            <th>Бумага</th>
             <th>Цена</th>
           </tr>
         </thead>
@@ -635,7 +634,6 @@ function renderPrices() {
 
   const filtered = allPrices.filter(item => {
     const position = (item['Позиция'] || '').toLowerCase();
-    const paper = (item['Бумага'] || '').toLowerCase();
     const itemCategory = item['Категория'] || '';
 
     const matchesSearch =
@@ -668,7 +666,6 @@ function renderPrices() {
   tbody.innerHTML = filtered.map(item => {
     const position = escapeHTML(item['Позиция'] || 'Без названия');
     const itemCategory = escapeHTML(item['Категория'] || '—');
-    const paper = escapeHTML(item['Бумага'] || '—');
     const rawPrice = (item['Цена'] || '').trim();
 
     const price = rawPrice
