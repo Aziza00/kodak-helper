@@ -384,8 +384,29 @@ footer {
 
   <!-- ФОТО НА ДОКУМЕНТЫ -->
 
-  <section id="photo" class="content-section">
-    <h2>📸 Фото на документы</h2>
+
+<section id="photo" class="content-section">
+  <h2>📸 Фото на документы</h2>
+  <p class="section-description">
+    Форматы фотографий и требования к документам.
+  </p>
+
+  <input
+    id="photoSearch"
+    class="search-input"
+    type="search"
+    placeholder="🔍 Найти документ..."
+    oninput="renderPhoto()"
+  >
+
+  <div id="photoList">
+    <div class="message">Загрузка информации...</div>
+  </div>
+
+  <a class="back-button" href="#top">← На главную</a>
+</section>
+
+  <h2>📸 Фото на документы</h2>
     <p class="section-description">
       Размеры, требования и инструкции по подготовке фотографий.
     </p>
@@ -695,6 +716,107 @@ function escapeHTML(value) {
 }
 
 // ЗАПУСК
+
+
+// ФОТО НА ДОКУМЕНТЫ
+
+let allPhoto = [];
+
+function renderPhoto() {
+  const search = document
+    .getElementById('photoSearch')
+    .value.trim().toLowerCase();
+
+  const filtered = allPhoto.filter(item => {
+    return [
+      item['Документ'],
+      item['Размер'],
+      item['Требования'],
+      item['Описание']
+    ].some(value =>
+      String(value || '').toLowerCase().includes(search)
+    );
+  });
+
+  const container = document.getElementById('photoList');
+
+  if (!filtered.length) {
+    container.innerHTML =
+      '<div class="message">Ничего не найдено.</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map(item => `
+    <article style="padding:18px 0;border-bottom:1px solid #eee;">
+      <h3>${escapeHTML(item['Документ'] || 'Без названия')}</h3>
+      <p style="margin-top:10px;">
+        <strong>Размер:</strong>
+        ${escapeHTML(item['Размер'] || '—')}
+      </p>
+      <p>
+        <strong>Требования:</strong>
+        ${escapeHTML(item['Требования'] || '—')}
+      </p>
+      <p>
+        ${escapeHTML(item['Описание'] || '')}
+      </p>
+    </article>
+  `).join('');
+}
+
+// ЗАПУСК
+
+function loadKodakData() {
+  const script = document.createElement('script');
+  const callbackName = 'kodakApiCallback';
+
+  const timeout = setTimeout(() => {
+    delete window[callbackName];
+    script.remove();
+    showApiError();
+  }, 20000);
+
+  window[callbackName] = function(data) {
+    clearTimeout(timeout);
+    script.remove();
+    delete window[callbackName];
+
+    if (!data || !Array.isArray(data.price)) {
+      showApiError();
+      return;
+    }
+
+    allPrices = data.price.sort((a, b) =>
+      Number(a['Порядок'] || 0) -
+      Number(b['Порядок'] || 0)
+    );
+
+    allPhoto = Array.isArray(data.photo)
+      ? data.photo.sort((a, b) =>
+          Number(a['Порядок'] || 0) -
+          Number(b['Порядок'] || 0)
+        )
+      : [];
+
+    buildCategoryFilter();
+    renderPrices();
+    renderPhoto();
+    setApiStatus(true);
+  };
+
+  script.onerror = function() {
+    clearTimeout(timeout);
+    script.remove();
+    delete window[callbackName];
+    showApiError();
+  };
+
+  script.src = API_URL +
+    '?callback=' + callbackName +
+    '&t=' + Date.now();
+
+  document.body.appendChild(script);
+}
 
 loadKodakData();
 
