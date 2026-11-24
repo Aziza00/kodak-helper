@@ -634,12 +634,11 @@ function renderPrices() {
 
   const filtered = allPrices.filter(item => {
     const position = (item['Позиция'] || '').toLowerCase();
-    const itemCategory = item['Категория'] || '';
+const itemCategory = item['Категория'] || '';
 
-    const matchesSearch =
-      position.includes(search) ||
-      paper.includes(search) ||
-      itemCategory.toLowerCase().includes(search);
+const matchesSearch =
+  position.includes(search) ||
+  itemCategory.toLowerCase().includes(search);
 
     const matchesCategory =
       !category || itemCategory === category;
