@@ -384,6 +384,7 @@ footer {
 
   <!-- ФОТО НА ДОКУМЕНТЫ -->
 
+
 <section id="photo" class="content-section">
   <h2>📸 Фото на документы</h2>
   <p class="section-description">
@@ -404,6 +405,7 @@ footer {
 
   <a class="back-button" href="#top">← На главную</a>
 </section>
+
 
   <!-- ПРИНТЕРЫ -->
 
@@ -513,7 +515,7 @@ footer {
   KODAK HELPER · YOUR DAILY WORK ASSISTANT
 </footer>
 
-
+<script>
 // ========================================
 // KODAK HELPER — GOOGLE APPS SCRIPT API
 // ========================================
@@ -548,17 +550,13 @@ function loadKodakData() {
       return;
     }
 
-    // Прайс
     allPrices = data.price.sort((a, b) =>
-      Number(a['Порядок'] || 0) -
-      Number(b['Порядок'] || 0)
+      Number(a['Порядок'] || 0) - Number(b['Порядок'] || 0)
     );
 
-    // Фото на документы
     allPhoto = Array.isArray(data.photo)
       ? data.photo.sort((a, b) =>
-          Number(a['Порядок'] || 0) -
-          Number(b['Порядок'] || 0)
+          Number(a['Порядок'] || 0) - Number(b['Порядок'] || 0)
         )
       : [];
 
@@ -575,11 +573,7 @@ function loadKodakData() {
     showApiError();
   };
 
-  script.src =
-    API_URL +
-    '?callback=' + callbackName +
-    '&t=' + Date.now();
-
+  script.src = API_URL + '?callback=' + callbackName + '&t=' + Date.now();
   document.body.appendChild(script);
 }
 
@@ -589,13 +583,9 @@ function loadKodakData() {
 
 function setApiStatus(online) {
   const status = document.getElementById('apiStatus');
-
   if (!status) return;
 
-  status.className = online
-    ? 'status online'
-    : 'status error';
-
+  status.className = online ? 'status online' : 'status error';
   status.innerHTML = online
     ? '<span class="status-dot"></span> Данные загружены'
     : '<span class="status-dot"></span> Ошибка соединения';
@@ -614,9 +604,8 @@ function showApiError() {
 
   const errorMessage = `
     <div class="message">
-      Не удалось подключиться к базе Kodak.
-      <br>
-      Проверьте интернет-соединение.
+      Не удалось подключиться к базе Kodak.<br>
+      Проверьте интернет-соединение и попробуйте ещё раз.
       <br><br>
       <button
         onclick="loadKodakData()"
@@ -629,9 +618,7 @@ function showApiError() {
 
   if (priceList) {
     priceList.innerHTML = `
-      <tr>
-        <td colspan="3">${errorMessage}</td>
-      </tr>
+      <tr><td colspan="3">${errorMessage}</td></tr>
     `;
   }
 
@@ -646,15 +633,10 @@ function showApiError() {
 
 function buildCategoryFilter() {
   const select = document.getElementById('categoryFilter');
-
   if (!select) return;
 
   const categories = [
-    ...new Set(
-      allPrices
-        .map(item => item['Категория'])
-        .filter(Boolean)
-    )
+    ...new Set(allPrices.map(item => item['Категория']).filter(Boolean))
   ];
 
   select.innerHTML = '<option value="">Все категории</option>';
@@ -683,31 +665,24 @@ function renderPrices() {
   const category = categorySelect.value;
 
   const filtered = allPrices.filter(item => {
-    const itemCategory = item['Категория'] || '';
-    const position = item['Позиция'] || '';
+    const itemCategory = String(item['Категория'] || '');
+    const position = String(item['Позиция'] || '');
 
     const matchesSearch =
       position.toLowerCase().includes(search) ||
       itemCategory.toLowerCase().includes(search);
 
-    const matchesCategory =
-      !category || itemCategory === category;
-
+    const matchesCategory = !category || itemCategory === category;
     return matchesSearch && matchesCategory;
   });
 
   if (count) {
-    count.textContent =
-      `Показано позиций: ${filtered.length} из ${allPrices.length}`;
+    count.textContent = `Показано позиций: ${filtered.length} из ${allPrices.length}`;
   }
 
   if (!filtered.length) {
     tbody.innerHTML = `
-      <tr>
-        <td colspan="3" class="message">
-          Ничего не найдено.
-        </td>
-      </tr>
+      <tr><td colspan="3" class="message">Ничего не найдено.</td></tr>
     `;
     return;
   }
@@ -723,9 +698,7 @@ function renderPrices() {
 
     return `
       <tr>
-        <td>
-          <span class="category-label">${itemCategory}</span>
-        </td>
+        <td><span class="category-label">${itemCategory}</span></td>
         <td><strong>${position}</strong></td>
         <td>${price}</td>
       </tr>
@@ -740,21 +713,18 @@ function renderPrices() {
 function renderPhoto() {
   const searchInput = document.getElementById('photoSearch');
   const container = document.getElementById('photoList');
-
   if (!searchInput || !container) return;
 
   const search = searchInput.value.trim().toLowerCase();
 
-  const filtered = allPhoto.filter(item => {
-    return [
+  const filtered = allPhoto.filter(item =>
+    [
       item['Документ'],
       item['Размер'],
       item['Требования'],
       item['Описание']
-    ].some(value =>
-      String(value || '').toLowerCase().includes(search)
-    );
-  });
+    ].some(value => String(value || '').toLowerCase().includes(search))
+  );
 
   if (!filtered.length) {
     container.innerHTML = `
@@ -770,28 +740,21 @@ function renderPhoto() {
   container.innerHTML = filtered.map(item => `
     <article style="padding:18px 0;border-bottom:1px solid #eee;">
       <h3>${escapeHTML(item['Документ'] || 'Без названия')}</h3>
-
       <p style="margin-top:10px;">
-        <strong>Размер:</strong>
-        ${escapeHTML(item['Размер'] || '—')}
+        <strong>Размер:</strong> ${escapeHTML(item['Размер'] || '—')}
       </p>
-
       <p style="margin-top:8px;">
-        <strong>Требования:</strong>
-        ${escapeHTML(item['Требования'] || '—')}
+        <strong>Требования:</strong> ${escapeHTML(item['Требования'] || '—')}
       </p>
-
       ${item['Описание'] ? `
-        <p style="margin-top:8px;">
-          ${escapeHTML(item['Описание'])}
-        </p>
+        <p style="margin-top:8px;">${escapeHTML(item['Описание'])}</p>
       ` : ''}
     </article>
   `).join('');
 }
 
 // ========================================
-// ЗАЩИТА ТЕКСТА
+// ЗАЩИТА ТЕКСТА ОТ HTML-ВСТАВОК
 // ========================================
 
 function escapeHTML(value) {
@@ -809,9 +772,7 @@ function escapeHTML(value) {
 // ========================================
 
 loadKodakData();
+</script>
 
-
-
-  
 </body>
 </html>
