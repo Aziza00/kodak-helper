@@ -293,7 +293,60 @@ body:has(.content-section:target) .grid {
     padding: 17px;
   }
 }
+/* ОБОРУДОВАНИЕ */
 
+.equipment-search {
+  width: 100%;
+  margin: 15px 0 20px;
+}
+
+.equipment-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.equipment-card {
+  padding: 22px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+}
+
+.equipment-card h3 {
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: #202020;
+}
+
+.equipment-model {
+  display: inline-block;
+  padding: 7px 11px;
+  margin-bottom: 14px;
+  background: #fff5b8;
+  border-radius: 7px;
+  font-weight: bold;
+  color: #202020;
+}
+
+.equipment-field {
+  margin-top: 12px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #202020;
+}
+
+.equipment-field strong {
+  display: block;
+  margin-bottom: 3px;
+}
+
+@media(max-width:650px) {
+  .equipment-grid {
+    grid-template-columns: 1fr;
+  }
+}
+  
   
 /* ПРАЙС */
 
@@ -642,13 +695,27 @@ footer {
   <!-- ПРИНТЕРЫ -->
 
   <section id="printers" class="content-section">
-    <h2>🖨️ Принтеры</h2>
-    <p class="section-description">
-      Настройки печати, обслуживание оборудования и устранение ошибок.
-    </p>
-    <div class="message">Раздел готовится к заполнению.</div>
-    <a class="back-button" href="#top">← На главную</a>
-  </section>
+  <h2>🖨️ Принтеры и оборудование</h2>
+
+  <p class="section-description">
+    Информация об оборудовании, настройках и устранении ошибок.
+  </p>
+
+  <input
+    id="equipmentSearch"
+    class="search-input equipment-search"
+    type="search"
+    placeholder="🔍 Найти принтер или проблему..."
+    oninput="renderEquipment()"
+  >
+
+  <div id="equipmentList">
+    <div class="message">Загрузка оборудования...</div>
+  </div>
+
+  <a class="back-button" href="#top">← На главную</a>
+</section>
+  
 
   <!-- ПРАЙС -->
 
@@ -757,6 +824,7 @@ const API_URL =
 
 let allPrices = [];
 let allPhoto = [];
+let allEquipment = [];
 
 // ========================================
 // ЗАГРУЗКА ДАННЫХ
@@ -792,9 +860,18 @@ function loadKodakData() {
         )
       : [];
 
+    allEquipment = Array.isArray(data.equipment)
+  ? data.equipment.sort((a, b) =>
+      Number(a['Порядок'] || 0) - Number(b['Порядок'] || 0)
+    )
+  : [];
+
+    
+
     buildCategoryFilter();
     renderPrices();
     renderPhoto();
+    renderEquipment();
     setApiStatus(true);
   };
 
@@ -942,20 +1019,25 @@ function renderPrices() {
 // ФОТО НА ДОКУМЕНТЫ
 // ========================================
 
-function renderPhoto() {
-  const searchInput = document.getElementById('photoSearch');
-  const container = document.getElementById('photoList');
+// ========================================
+// ОБОРУДОВАНИЕ
+// ========================================
+
+function renderEquipment() {
+  const searchInput = document.getElementById('equipmentSearch');
+  const container = document.getElementById('equipmentList');
 
   if (!searchInput || !container) return;
 
   const search = searchInput.value.trim().toLowerCase();
 
-  const filtered = allPhoto.filter(item =>
+  const filtered = allEquipment.filter(item =>
     [
-      item['Документ'],
-      item['Размер'],
-      item['Требования'],
-      item['Описание']
+      item['Название'],
+      item['Модель'],
+      item['Категория'],
+      item['Инструкция'],
+      item['Частые ошибки']
     ].some(value =>
       String(value || '').toLowerCase().includes(search)
     )
@@ -964,9 +1046,9 @@ function renderPhoto() {
   if (!filtered.length) {
     container.innerHTML = `
       <div class="message">
-        ${allPhoto.length
+        ${allEquipment.length
           ? 'Ничего не найдено.'
-          : 'Пока нет опубликованных форматов фотографий.'}
+          : 'Пока нет опубликованного оборудования.'}
       </div>
     `;
     return;
@@ -974,31 +1056,35 @@ function renderPhoto() {
 
   container.innerHTML = `
     <div class="photo-count">
-      Найдено форматов: ${filtered.length}
+      Найдено устройств: ${filtered.length}
     </div>
 
-    <div class="photo-grid">
+    <div class="equipment-grid">
       ${filtered.map(item => `
-        <article class="photo-card">
+        <article class="equipment-card">
 
           <h3>
-            ${escapeHTML(item['Документ'] || 'Без названия')}
+            ${escapeHTML(item['Название'] || 'Без названия')}
           </h3>
 
-          <div class="photo-size">
-            ${escapeHTML(item['Размер'] || 'Размер не указан')}
+          <div class="equipment-model">
+            ${escapeHTML(item['Модель'] || 'Модель не указана')}
           </div>
 
-          <div class="photo-field">
-            <strong>Требования</strong>
-            ${escapeHTML(item['Требования'] || 'Не указаны')}
+          <div class="equipment-field">
+            <strong>Категория</strong>
+            ${escapeHTML(item['Категория'] || '—')}
           </div>
 
-          ${item['Описание'] ? `
-            <div class="photo-description">
-              ${escapeHTML(item['Описание'])}
-            </div>
-          ` : ''}
+          <div class="equipment-field">
+            <strong>Инструкция</strong>
+            ${escapeHTML(item['Инструкция'] || 'Пока не добавлена')}
+          </div>
+
+          <div class="equipment-field">
+            <strong>Частые ошибки</strong>
+            ${escapeHTML(item['Частые ошибки'] || 'Пока не добавлены')}
+          </div>
 
         </article>
       `).join('')}
