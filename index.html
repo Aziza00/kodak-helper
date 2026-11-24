@@ -790,12 +790,13 @@ footer {
 
   <section id="instructions" class="content-section">
   <h2>📚 Инструкции</h2>
+
   <p class="section-description">
     Пошаговые руководства для повседневной работы.
   </p>
 
   <input
-    id="instructionsSearch"
+    id="instructionSearch"
     class="search-input"
     type="search"
     placeholder="🔍 Найти инструкцию..."
@@ -808,21 +809,24 @@ footer {
 
   <a class="back-button" href="#top">← На главную</a>
 </section>
+
+  
   
 
   <!-- ССЫЛКИ -->
 
 <section id="links" class="content-section">
   <h2>🌐 Полезные ссылки</h2>
+
   <p class="section-description">
-    Необходимые сайты и программы.
+    Официальные сайты, руководства и драйверы оборудования.
   </p>
 
   <input
-    id="linksSearch"
+    id="linkSearch"
     class="search-input"
     type="search"
-    placeholder="🔍 Найти сайт или программу..."
+    placeholder="🔍 Найти ссылку..."
     oninput="renderLinks()"
   >
 
@@ -832,6 +836,7 @@ footer {
 
   <a class="back-button" href="#top">← На главную</a>
 </section>
+  
 
   
 </main>
@@ -850,7 +855,6 @@ const API_URL =
 
 let allPrices = [];
 let allPhoto = [];
-let allEquipment = [];
 let allInstructions = [];
 let allLinks = [];
 
@@ -878,43 +882,25 @@ function loadKodakData() {
       return;
     }
 
-    allPrices = data.price.sort((a, b) =>
-      Number(a['Порядок'] || 0) - Number(b['Порядок'] || 0)
-    );
+    const sortByOrder = (a, b) =>
+      Number(a['Порядок'] || 0) - Number(b['Порядок'] || 0);
 
-    allPhoto = Array.isArray(data.photo)
-      ? data.photo.sort((a, b) =>
-          Number(a['Порядок'] || 0) - Number(b['Порядок'] || 0)
-        )
-      : [];
-
-    allEquipment = Array.isArray(data.equipment)
-  ? data.equipment.sort((a, b) =>
-      Number(a['Порядок'] || 0) - Number(b['Порядок'] || 0)
-    )
-  : [];
-
+    allPrices = data.price.sort(sortByOrder);
+    allPhoto = Array.isArray(data.photo) ? data.photo.sort(sortByOrder) : [];
     allInstructions = Array.isArray(data.instructions)
-  ? data.instructions.sort((a, b) =>
-      Number(a['Порядок'] || 0) - Number(b['Порядок'] || 0)
-    )
-  : [];
-
-allLinks = Array.isArray(data.links)
-  ? data.links.sort((a, b) =>
-      Number(a['Порядок'] || 0) - Number(b['Порядок'] || 0)
-    )
-  : [];
-
-    
+      ? data.instructions.sort(sortByOrder)
+      : [];
+    allLinks = Array.isArray(data.links)
+      ? data.links.sort(sortByOrder)
+      : [];
 
     buildCategoryFilter();
     renderPrices();
     renderPhoto();
-    renderEquipment();
-renderInstructions();
-renderLinks();
-setApiStatus(true);
+    renderInstructions();
+    renderLinks();
+
+    setApiStatus(true);
   };
 
   script.onerror = function() {
@@ -927,6 +913,8 @@ setApiStatus(true);
   script.src = API_URL + '?callback=' + callbackName + '&t=' + Date.now();
   document.body.appendChild(script);
 }
+
+  
 
 // ========================================
 // СТАТУС ПОДКЛЮЧЕНИЯ
@@ -949,10 +937,8 @@ function showApiError() {
   const priceCount = document.getElementById('priceCount');
   const priceList = document.getElementById('priceList');
   const photoList = document.getElementById('photoList');
-  const equipmentList = document.getElementById('equipmentList');
-
   const instructionsList = document.getElementById('instructionsList');
-const linksList = document.getElementById('linksList');
+  const linksList = document.getElementById('linksList');
 
   if (priceCount) {
     priceCount.textContent = 'Не удалось загрузить каталог';
@@ -960,7 +946,8 @@ const linksList = document.getElementById('linksList');
 
   const errorMessage = `
     <div class="message">
-      Не удалось подключиться к базе Kodak.<br>
+      Не удалось подключиться к базе Kodak.
+      <br>
       Проверьте интернет-соединение и попробуйте ещё раз.
       <br><br>
       <button
@@ -978,24 +965,12 @@ const linksList = document.getElementById('linksList');
     `;
   }
 
-  if (photoList) {
-    photoList.innerHTML = errorMessage;
-  }
-
-  if (equipmentList) {
-    equipmentList.innerHTML = errorMessage;
-  }
-
-  if (instructionsList) {
-  instructionsList.innerHTML = errorMessage;
-}
-
-if (linksList) {
-  linksList.innerHTML = errorMessage;
+  if (photoList) photoList.innerHTML = errorMessage;
+  if (instructionsList) instructionsList.innerHTML = errorMessage;
+  if (linksList) linksList.innerHTML = errorMessage;
 }
 
   
-}
 
 
 // ========================================
@@ -1355,7 +1330,151 @@ function renderLinks() {
 }
 
 
+// ========================================
+// ИНСТРУКЦИИ
+// ========================================
 
+function renderInstructions() {
+  const input = document.getElementById('instructionSearch');
+  const container = document.getElementById('instructionsList');
+
+  if (!input || !container) return;
+
+  const search = input.value.trim().toLowerCase();
+
+  const filtered = allInstructions.filter(item =>
+    [
+      item['Название'],
+      item['Категория'],
+      item['Описание'],
+      item['Шаги']
+    ].some(value =>
+      String(value || '').toLowerCase().includes(search)
+    )
+  );
+
+  if (!filtered.length) {
+    container.innerHTML = `
+      <div class="message">
+        ${allInstructions.length
+          ? 'Ничего не найдено.'
+          : 'Инструкции пока не добавлены.'}
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="photo-count">Найдено инструкций: ${filtered.length}</div>
+
+    <div class="photo-grid">
+      ${filtered.map(item => {
+        const steps = escapeHTML(item['Шаги'] || 'Шаги не указаны')
+          .replace(/(\d+\.)\s*/g, '<br><strong>$1</strong> ');
+
+        return `
+          <article class="photo-card">
+            <h3>${escapeHTML(item['Название'] || 'Без названия')}</h3>
+
+            <span class="category-label">
+              ${escapeHTML(item['Категория'] || '')}
+            </span>
+
+            <div class="photo-description">
+              ${escapeHTML(item['Описание'] || '')}
+            </div>
+
+            <div class="photo-field">
+              <strong>Порядок действий</strong>
+              ${steps}
+            </div>
+          </article>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+
+// ========================================
+// ПОЛЕЗНЫЕ ССЫЛКИ
+// ========================================
+
+function renderLinks() {
+  const input = document.getElementById('linkSearch');
+  const container = document.getElementById('linksList');
+
+  if (!input || !container) return;
+
+  const search = input.value.trim().toLowerCase();
+
+  const filtered = allLinks.filter(item =>
+    [
+      item['Название'],
+      item['Категория'],
+      item['Описание']
+    ].some(value =>
+      String(value || '').toLowerCase().includes(search)
+    )
+  );
+
+  if (!filtered.length) {
+    container.innerHTML = `
+      <div class="message">
+        ${allLinks.length
+          ? 'Ничего не найдено.'
+          : 'Ссылки пока не добавлены.'}
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="photo-count">Найдено ссылок: ${filtered.length}</div>
+
+    <div class="photo-grid">
+      ${filtered.map(item => {
+        let safeUrl = '';
+
+        try {
+          const parsed = new URL(item['URL']);
+          if (['http:', 'https:'].includes(parsed.protocol)) {
+            safeUrl = parsed.href;
+          }
+        } catch (error) {}
+
+        return `
+          <article class="photo-card">
+            <h3>${escapeHTML(item['Название'] || 'Без названия')}</h3>
+
+            <span class="category-label">
+              ${escapeHTML(item['Категория'] || '')}
+            </span>
+
+            <div class="photo-description">
+              ${escapeHTML(item['Описание'] || '')}
+            </div>
+
+            ${safeUrl ? `
+              <a
+                class="back-button"
+                href="${escapeHTML(safeUrl)}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Открыть ссылку ↗
+              </a>
+            ` : `
+              <div class="message">Некорректная ссылка</div>
+            `}
+          </article>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+  
   
 // ========================================
 // ЗАЩИТА ТЕКСТА ОТ HTML-ВСТАВОК
