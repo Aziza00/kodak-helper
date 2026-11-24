@@ -154,6 +154,84 @@ body:has(.content-section:target) .grid {
   background:#e8c600;
 }
 
+/* ФОТО НА ДОКУМЕНТЫ */
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.photo-card {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 20px;
+  transition: .2s;
+  min-width: 0;
+}
+
+.photo-card:hover {
+  border-color: var(--yellow);
+  box-shadow: 0 5px 18px #00000010;
+  transform: translateY(-2px);
+}
+
+.photo-card h3 {
+  font-size: 16px;
+  line-height: 1.4;
+  margin-bottom: 14px;
+}
+
+.photo-size {
+  display: inline-block;
+  background: #fff8cc;
+  border: 1px solid #f1df75;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 15px;
+}
+
+.photo-field {
+  margin-top: 10px;
+  line-height: 1.55;
+  font-size: 14px;
+}
+
+.photo-field strong {
+  display: block;
+  margin-bottom: 3px;
+}
+
+.photo-description {
+  color: var(--gray);
+  font-size: 13px;
+  line-height: 1.55;
+  margin-top: 12px;
+  padding-top: 11px;
+  border-top: 1px solid #eee;
+}
+
+.photo-count {
+  color: var(--gray);
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+@media (max-width: 650px) {
+  .photo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .photo-card {
+    padding: 17px;
+  }
+}
+
+  
 /* ПРАЙС */
 
 .price-toolbar {
@@ -713,6 +791,7 @@ function renderPrices() {
 function renderPhoto() {
   const searchInput = document.getElementById('photoSearch');
   const container = document.getElementById('photoList');
+
   if (!searchInput || !container) return;
 
   const search = searchInput.value.trim().toLowerCase();
@@ -723,7 +802,9 @@ function renderPhoto() {
       item['Размер'],
       item['Требования'],
       item['Описание']
-    ].some(value => String(value || '').toLowerCase().includes(search))
+    ].some(value =>
+      String(value || '').toLowerCase().includes(search)
+    )
   );
 
   if (!filtered.length) {
@@ -736,6 +817,40 @@ function renderPhoto() {
     `;
     return;
   }
+
+  container.innerHTML = `
+    <div class="photo-count">
+      Найдено форматов: ${filtered.length}
+    </div>
+
+    <div class="photo-grid">
+      ${filtered.map(item => `
+        <article class="photo-card">
+
+          <h3>
+            ${escapeHTML(item['Документ'] || 'Без названия')}
+          </h3>
+
+          <div class="photo-size">
+            ${escapeHTML(item['Размер'] || 'Размер не указан')}
+          </div>
+
+          <div class="photo-field">
+            <strong>Требования</strong>
+            ${escapeHTML(item['Требования'] || 'Не указаны')}
+          </div>
+
+          ${item['Описание'] ? `
+            <div class="photo-description">
+              ${escapeHTML(item['Описание'])}
+            </div>
+          ` : ''}
+
+        </article>
+      `).join('')}
+    </div>
+  `;
+}
 
   container.innerHTML = filtered.map(item => `
     <article style="padding:18px 0;border-bottom:1px solid #eee;">
